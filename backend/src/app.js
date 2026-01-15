@@ -1,11 +1,10 @@
-const express = require("express");
+import express from "express";
+import errorMiddleware from "./middleware/error.middleware.js";
 
 const app = express();
 
-// Middleware to parse JSON
 app.use(express.json());
 
-// Health check route
 app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
@@ -13,4 +12,6 @@ app.get("/health", (req, res) => {
   });
 });
 
-module.exports = app;
+app.use(errorMiddleware);
+
+export default app;
