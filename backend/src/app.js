@@ -1,7 +1,7 @@
 import express from "express";
 import prisma from "./config/db.js";
 import { requireAuth } from "./middleware/auth.middleware.js";
-
+import routes from "./routes/index.js"
 // Dummy route
 import { requireRole } from "./middleware/role.middleware.js";
 
@@ -63,8 +63,9 @@ app.get(
 );
 
 
+app.use("/", routes);
+
 
 /* Global Error Handler */
 app.use(errorMiddleware);
-
 export default app;

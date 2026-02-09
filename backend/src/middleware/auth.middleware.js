@@ -3,6 +3,28 @@ import prisma from "../config/db.js";
 
 export const requireAuth = async (req, res, next) => {
   try {
+    /*  DEVELOPMENT MODE (No Clerk) */
+    if (process.env.NODE_ENV === "development") {
+      let user = await prisma.user.findUnique({
+        where: { id: "dev-user-id" },
+      });
+
+      if (!user) {
+        user = await prisma.user.create({
+          data: {
+            id: "dev-user-id",
+            clerkUserId: "dev-clerk-id",
+            email: "dev@example.com",
+            role: "STUDENT",
+          },
+        });
+      }
+
+      req.user = user;
+      return next();
+    }
+
+    /* PRODUCTION MODE (Clerk JWT) */
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {

@@ -31,11 +31,13 @@ model User {
 }
 
 model StudentProfile {
-  id         String  @id @default(uuid())
-  userId     String  @unique
-  department String
-  cgpa       Float
-  skills     String
+  id          String  @id @default(uuid())
+  userId      String  @unique
+  degree      String
+  department  String
+  yearOfStudy Int
+  cgpa        Float
+  skills      String
 
-  user User @relation(fields: [userId], references: [id])
+  user        User    @relation(fields: [userId], references: [id])
 }
